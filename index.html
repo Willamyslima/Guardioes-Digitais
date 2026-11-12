@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardiões Digitais: Guiando Usuários no Espaço Virtual | UNINTER</title>
+    <!-- Carregando Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carregando Fonte Inter para máxima legibilidade -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Carregando Lucide Icons via CDN para ícones claros e acessíveis -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#1e3a8a',
+                            900: '#0f2557',
+                            950: '#091636',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base de tipografia escalável via JavaScript */
+        html {
+            font-size: 100%; /* 16px base, escalável até 135% */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* =========================================================
+           MODO ALTO CONTRASTE (Fundo Preto / Texto Amarelo e Branco)
+           Essencial para idosos e pessoas com baixa visão
+           ========================================================= */
+        body.high-contrast {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        body.high-contrast header,
+        body.high-contrast nav,
+        body.high-contrast section,
+        body.high-contrast footer,
+        body.high-contrast div.bg-white,
+        body.high-contrast div.bg-slate-50,
+        body.high-contrast div.bg-slate-100,
+        body.high-contrast div.bg-blue-50,
+        body.high-contrast div.bg-emerald-50,
+        body.high-contrast div.bg-amber-50,
+        body.high-contrast div.bg-red-50,
+        body.high-contrast article {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border-color: #facc15 !important; /* Amarelo vivo */
+        }
+
+        body.high-contrast h1,
+        body.high-contrast h2,
+        body.high-contrast h3,
+        body.high-contrast h4,
+        body.high-contrast strong,
+        body.high-contrast .text-navy-900,
+        body.high-contrast .text-blue-900,
+        body.high-contrast .text-emerald-800,
+        body.high-contrast .text-amber-800,
+        body.high-contrast .text-red-800 {
+            color: #facc15 !important;
+        }
+
+        body.high-contrast p,
+        body.high-contrast span,
+        body.high-contrast li,
+        body.high-contrast label {
+            color: #ffffff !important;
+        }
+
+        body.high-contrast button,
+        body.high-contrast a.btn-action {
+            background-color: #000000 !important;
+            color: #facc15 !important;
+            border: 2px solid #facc15 !important;
+        }
+
+        body.high-contrast button:hover,
+        body.high-contrast a.btn-action:hover {
+            background-color: #facc15 !important;
+            color: #000000 !important;
+        }
+
+        body.high-contrast button:hover span,
+        body.high-contrast button:hover i,
+        body.high-contrast a.btn-action:hover span {
+            color: #000000 !important;
+        }
+
+        body.high-contrast input {
+            background-color: #000000 !important;
+            color: #facc15 !important;
+            border: 2px solid #facc15 !important;
+        }
+
+        /* Estilo de Impressão para a Cartilha Digital em PDF */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #cartilha-print-area, #cartilha-print-area * {
+                visibility: visible;
+            }
+            #cartilha-print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+                padding: 20px;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Foco visível aprimorado para navegação por teclado */
+        *:focus-visible {
+            outline: 4px solid #f59e0b !important;
+            outline-offset: 2px !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-amber-200 selection:text-navy-950">
+
+    <!-- =====================================================================
+         1. BARRA SUPERIOR FIXA DE ACESSIBILIDADE EXTREMA
+         ===================================================================== -->
+    <div id="accessibility-bar" role="region" aria-label="Barra de Ferramentas de Acessibilidade" class="sticky top-0 z-50 bg-navy-950 text-white border-b-2 border-amber-400 shadow-lg px-3 py-2.5 no-print">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="bg-amber-400 text-navy-950 font-extrabold px-2.5 py-1 rounded-lg text-xs sm:text-sm uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="accessibility" class="w-4 h-4"></i>
+                    Acessibilidade
+                </span>
+                <span class="hidden md:inline text-sm text-slate-200">Ajuste a tela para ler melhor:</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Diminuir Fonte -->
+                <button type="button" onclick="changeFontSize(-10)" aria-label="Diminuir tamanho da letra" class="bg-navy-800 hover:bg-navy-700 text-white font-bold px-3 py-2 rounded-xl border border-slate-500 flex items-center gap-1 text-sm sm:text-base transition cursor-pointer">
+                    <span>A-</span>
+                    <span class="hidden sm:inline text-xs font-normal">Menor</span>
+                </button>
+
+                <!-- Restaurar Fonte -->
+                <button type="button" onclick="resetFontSize()" aria-label="Tamanho normal da letra" class="bg-navy-800 hover:bg-navy-700 text-white font-bold px-3 py-2 rounded-xl border border-slate-500 text-sm sm:text-base transition cursor-pointer">
+                    A
+                </button>
+
+                <!-- Aumentar Fonte -->
+                <button type="button" onclick="changeFontSize(10)" aria-label="Aumentar tamanho da letra" class="bg-navy-800 hover:bg-navy-700 text-white font-bold px-3 py-2 rounded-xl border border-slate-500 flex items-center gap-1 text-sm sm:text-base transition cursor-pointer">
+                    <span>A+</span>
+                    <span class="hidden sm:inline text-xs font-normal">Maior</span>
+                </button>
+
+                <!-- Modo Alto Contraste -->
+                <button type="button" id="btn-contrast" onclick="toggleHighContrast()" aria-pressed="false" class="bg-amber-400 hover:bg-amber-300 text-navy-950 font-extrabold px-3.5 py-2 rounded-xl flex items-center gap-1.5 text-sm sm:text-base shadow transition cursor-pointer">
+                    <i data-lucide="contrast" class="w-4 h-4"></i>
+                    <span>Alto Contraste</span>
+                </button>
+
+                <!-- Leitura em Voz Alta da Página -->
+                <button type="button" id="btn-read-page" onclick="toggleReadPage()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 text-sm sm:text-base shadow transition cursor-pointer">
+                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                    <span id="read-page-label">Ouvir Página</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         2. NAVEGAÇÃO PRINCIPAL E HERO SECTION
+         ===================================================================== -->
+    <header class="bg-gradient-to-b from-navy-900 via-navy-900 to-navy-800 text-white pt-6 pb-16 px-4 sm:px-6 border-b-4 border-emerald-500">
+        <div class="max-w-7xl mx-auto">
+            <!-- Top Nav Institucional -->
+            <nav aria-label="Menu Principal" class="flex flex-col md:flex-row items-center justify-between gap-4 pb-8 border-b border-blue-800/70">
+                <div class="flex items-center gap-3">
+                    <div class="bg-emerald-500 text-navy-950 p-3 rounded-2xl shadow-md">
+                        <i data-lucide="shield-check" class="w-8 h-8 stroke-[2.5]"></i>
+                    </div>
+                    <div>
+                        <span class="block text-xl sm:text-2xl font-extrabold tracking-tight text-white">Guardiões Digitais</span>
+                        <span class="block text-xs sm:text-sm text-emerald-300 font-medium">Projeto de Extensão Comunitária • UNINTER</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
+                    <a href="#simulador-pix" class="px-4 py-2.5 rounded-xl bg-blue-950/80 hover:bg-blue-800 text-white font-semibold text-sm sm:text-base border border-blue-700 transition">Treinar PIX</a>
+                    <a href="#guia-golpes" class="px-4 py-2.5 rounded-xl bg-blue-950/80 hover:bg-blue-800 text-white font-semibold text-sm sm:text-base border border-blue-700 transition">Principais Golpes</a>
+                    <a href="#senhas-links" class="px-4 py-2.5 rounded-xl bg-blue-950/80 hover:bg-blue-800 text-white font-semibold text-sm sm:text-base border border-blue-700 transition">Testar Senha e Links</a>
+                    <a href="#cartilha-digital" class="px-4 py-2.5 rounded-xl bg-blue-950/80 hover:bg-blue-800 text-white font-semibold text-sm sm:text-base border border-blue-700 transition">Cartilha PDF</a>
+                </div>
+            </nav>
+
+            <!-- Hero Content -->
+            <div class="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 bg-emerald-950/90 border border-emerald-400/50 text-emerald-300 px-4 py-2 rounded-full text-sm font-bold">
+                        <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+                        <span>Inclusão Digital, Autonomia e Proteção para Todos</span>
+                    </div>
+
+                    <h1 id="hero-title" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-white">
+                        Guardiões Digitais: <span class="text-amber-300">Guiando Usuários</span> no Espaço Virtual
+                    </h1>
+
+                    <p id="hero-desc" class="text-lg sm:text-xl text-slate-100 leading-relaxed font-normal">
+                        Aprenda de forma simples, prática e sem medo a usar o celular, fazer transferências <strong>PIX com total segurança</strong> e identificar golpes na internet antes que eles aconteçam.
+                    </p>
+
+                    <!-- Botões de Ação Rápida (Alvos de toque grandes) -->
+                    <div class="pt-2 flex flex-col sm:flex-row gap-4">
+                        <a href="#simulador-pix" class="btn-action bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-extrabold text-lg px-7 py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5">
+                            <i data-lucide="smartphone" class="w-6 h-6"></i>
+                            <span>Praticar PIX Seguro Agora</span>
+                        </a>
+                        <a href="#guia-golpes" class="btn-action bg-white hover:bg-slate-100 text-navy-900 font-extrabold text-lg px-7 py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5">
+                            <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-600"></i>
+                            <span>Conhecer os Golpes</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cartão de Boas-Vindas / Resumo Visual -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white text-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border-4 border-emerald-400">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-5">
+                            <h2 class="text-xl font-extrabold text-navy-900 flex items-center gap-2">
+                                <i data-lucide="compass" class="w-6 h-6 text-emerald-600"></i>
+                                O que você vai aprender aqui:
+                            </h2>
+                            <button type="button" onclick="speakText('O que você vai aprender aqui: Primeiro, fazer PIX em um celular de treino sem gastar dinheiro de verdade. Segundo, reconhecer falsos atendentes de banco e golpes no WhatsApp. Terceiro, criar senhas fortes e descobrir se um link é falso. Quarto, baixar nossa cartilha educativa gratuita.')" aria-label="Ouvir lista de aprendizado" class="p-2.5 bg-blue-100 hover:bg-blue-200 text-navy-900 rounded-xl transition cursor-pointer" title="Ouvir resumo">
+                                <i data-lucide="volume-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+
+                        <ul class="space-y-4 text-base sm:text-lg">
+                            <li class="flex items-start gap-3">
+                                <span class="bg-emerald-100 text-emerald-800 font-extrabold w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
+                                <span><strong>Simulador de PIX:</strong> Treine transferências e leitura de QR Code sem risco real.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-amber-100 text-amber-800 font-extrabold w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
+                                <span><strong>Alerta de Golpes:</strong> Saiba como agir contra falso suporte bancário e WhatsApp clonado.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-blue-100 text-blue-800 font-extrabold w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
+                                <span><strong>Senhas e Links:</strong> Teste sua senha e pratique identificar mensagens falsas.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-purple-100 text-purple-800 font-extrabold w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5">4</span>
+                                <span><strong>Cartilha Gratuita:</strong> Imprima ou salve o guia passo a passo para consultar em casa.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-20">
+
+        <!-- =====================================================================
+             3. SIMULADOR INTERATIVO DE PIX SEGURO (AMBIENTE DE TREINO)
+             ===================================================================== -->
+        <section id="simulador-pix" aria-labelledby="titulo-simulador" class="scroll-mt-24">
+            <div class="bg-white rounded-3xl shadow-xl border-2 border-slate-200 p-6 sm:p-10">
+                <div class="max-w-3xl mb-8">
+                    <span class="inline-block bg-emerald-100 text-emerald-900 font-extrabold px-4 py-1.5 rounded-full text-sm mb-3">
+                        FERRAMENTA PRÁTICA 1 • AMBIENTE 100% SEGURO
+                    </span>
+                    <h2 id="titulo-simulador" class="text-2xl sm:text-4xl font-extrabold text-navy-900 mb-3">
+                        Simulador de PIX Seguro
+                    </h2>
+                    <p class="text-lg text-slate-700 leading-relaxed">
+                        Pratique à vontade! Este é um <strong>celular de treinamento</strong>. Nenhum dinheiro real será movimentado. Escolha um dos dois desafios abaixo para aprender a conferir os dados antes de confirmar.
+                    </p>
+                </div>
+
+                <!-- Seletor de Cenários do Simulador -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-8" role="tablist" aria-label="Escolha o cenário de treino do PIX">
+                    <button type="button" id="tab-pix-chave" onclick="setPixScenario('chave')" role="tab" aria-selected="true" class="flex-1 p-5 rounded-2xl border-2 border-navy-900 bg-navy-900 text-white font-bold text-left flex items-center gap-4 shadow-md transition cursor-pointer">
+                        <div class="bg-emerald-500 text-navy-950 p-3 rounded-xl shrink-0">
+                            <i data-lucide="key-round" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-amber-300">Cenário 1</span>
+                            <span class="text-lg">Transferência por Chave PIX</span>
+                        </div>
+                    </button>
+
+                    <button type="button" id="tab-pix-qr" onclick="setPixScenario('qrcode')" role="tab" aria-selected="false" class="flex-1 p-5 rounded-2xl border-2 border-slate-300 bg-slate-100 hover:bg-slate-200 text-navy-900 font-bold text-left flex items-center gap-4 transition cursor-pointer">
+                        <div class="bg-amber-500 text-navy-950 p-3 rounded-xl shrink-0">
+                            <i data-lucide="qr-code" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-amber-700">Cenário 2 (Detetive)</span>
+                            <span class="text-lg">Identificar QR Code Falso</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Área Interativa: Instruções à esquerda + Celular Virtual à direita -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Painel de Instruções e Dicas Educativas -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <div id="pix-instructions-box" class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 id="pix-scenario-title" class="text-xl font-extrabold text-navy-900">
+                                    Missão 1: Conferência Obrigatória
+                                </h3>
+                                <button type="button" onclick="speakPixInstructions()" class="p-2.5 bg-white hover:bg-blue-100 text-navy-900 rounded-xl border border-blue-300 flex items-center gap-1.5 text-sm font-bold cursor-pointer">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                    <span>Ouvir</span>
+                                </button>
+                            </div>
+                            <p id="pix-scenario-desc" class="text-base sm:text-lg text-slate-800 leading-relaxed">
+                                Você precisa pagar <strong>R$ 85,00</strong> de consulta para a <strong>Clínica Saúde Vida</strong> (CNPJ: 12.345.678/0001-99). Digite a chave PIX no celular ao lado, avance e <strong>confira o nome e o banco</strong> antes de apertar o botão verde!
+                            </p>
+                            <div class="bg-white p-4 rounded-xl border border-blue-200">
+                                <span class="block text-sm font-bold text-navy-900 mb-1">💡 Regra de Ouro do Guardião:</span>
+                                <p class="text-base text-slate-700">
+                                    Nunca confirme um PIX na pressa. Sempre leia o <strong>Nome Completo</strong>, os <strong>números do CPF/CNPJ</strong> e o <strong>Banco de destino</strong> na tela de confirmação.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Caixa de Feedback Imediato do Simulador -->
+                        <div id="pix-feedback-box" aria-live="polite" class="hidden rounded-2xl p-6 border-2 shadow-md">
+                            <div class="flex items-start gap-4">
+                                <div id="pix-feedback-icon" class="p-3 rounded-xl shrink-0"></div>
+                                <div class="space-y-2">
+                                    <h4 id="pix-feedback-title" class="text-xl font-extrabold"></h4>
+                                    <p id="pix-feedback-text" class="text-base sm:text-lg leading-relaxed"></p>
+                                    <button type="button" onclick="resetPixPhone()" class="mt-3 bg-navy-900 hover:bg-navy-800 text-white font-bold px-5 py-2.5 rounded-xl text-base transition cursor-pointer">
+                                        Treinar Novamente
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Celular Virtual Interativo -->
+                    <div class="lg:col-span-6 flex justify-center">
+                        <div class="w-full max-w-md bg-slate-900 rounded-[2.5rem] p-4 shadow-2xl border-4 border-slate-700">
+                            <!-- Barra superior do celular -->
+                            <div class="bg-emerald-700 text-white rounded-t-[1.8rem] px-5 py-4 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="landmark" class="w-5 h-5"></i>
+                                    <span class="font-bold text-base">Banco Seguro (Treino)</span>
+                                </div>
+                                <span class="text-xs bg-emerald-900 px-2.5 py-1 rounded-full font-semibold">Saldo Fictício: R$ 1.500,00</span>
+                            </div>
+
+                            <!-- Tela interna do aplicativo bancário -->
+                            <div id="phone-screen" class="bg-white text-slate-900 rounded-b-[1.8rem] p-5 sm:p-6 min-h-[430px] flex flex-col justify-between">
+                                <!-- Conteúdo dinâmico injetado via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             4. GUIA VISUAL DOS PRINCIPAIS GOLPES CONTRA IDOSOS (COM ÁUDIO)
+             ===================================================================== -->
+        <section id="guia-golpes" aria-labelledby="titulo-golpes" class="scroll-mt-24">
+            <div class="mb-8">
+                <span class="inline-block bg-amber-100 text-amber-900 font-extrabold px-4 py-1.5 rounded-full text-sm mb-3">
+                    CONHECIMENTO QUE PROTEGE • ALERTA DE GOLPES
+                </span>
+                <h2 id="titulo-golpes" class="text-2xl sm:text-4xl font-extrabold text-navy-900 mb-3">
+                    Principais Golpes Aplicados Contra Idosos
+                </h2>
+                <p class="text-lg text-slate-700 max-w-3xl leading-relaxed">
+                    Os golpistas usam o medo e a pressa para enganar as pessoas. Conheça os 4 golpes mais comuns e clique em <strong>"Ouvir Explicação"</strong> se preferir escutar cada cartão.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                
+                <!-- Card 1: Falso Suporte Bancário -->
+                <article class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-slate-200 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-red-100 text-red-700 p-3.5 rounded-2xl shrink-0">
+                                    <i data-lucide="phone-off" class="w-7 h-7"></i>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-navy-900">1. Falso Suporte Bancário</h3>
+                            </div>
+                            <button type="button" onclick="speakCard('golpe1')" aria-label="Ouvir explicação sobre Falso Suporte Bancário" class="bg-blue-100 hover:bg-blue-200 text-navy-900 font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 text-sm shrink-0 transition cursor-pointer">
+                                <i data-lucide="volume-2" class="w-5 h-5"></i>
+                                <span>Ouvir</span>
+                            </button>
+                        </div>
+
+                        <div id="golpe1-content" class="space-y-3 text-base sm:text-lg">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <strong class="block text-navy-900 mb-1">Como funciona:</strong>
+                                <p class="text-slate-700">Alguém liga dizendo ser do seu banco e afirma que tentaram fazer uma compra suspeita ou clonar sua conta. Pedem para você instalar um aplicativo ou fazer um "PIX de estorno".</p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                                <strong class="block text-amber-900 mb-1">⚠️ Sinais de alerta:</strong>
+                                <p class="text-slate-800">Pedem senha, código recebido por SMS, instalação de aplicativos de acesso remoto ou transferência para "cancelar" compras.</p>
+                            </div>
+                            <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                                <strong class="block text-emerald-900 mb-1">✅ O que fazer:</strong>
+                                <p class="text-slate-800"><strong>Desligue imediatamente.</strong> O banco nunca liga pedindo senhas ou transferências. Ligue você mesmo para o número oficial atrás do seu cartão.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2: Falso Empréstimo -->
+                <article class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-slate-200 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-amber-100 text-amber-700 p-3.5 rounded-2xl shrink-0">
+                                    <i data-lucide="banknote" class="w-7 h-7"></i>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-navy-900">2. Falso Empréstimo</h3>
+                            </div>
+                            <button type="button" onclick="speakCard('golpe2')" aria-label="Ouvir explicação sobre Falso Empréstimo" class="bg-blue-100 hover:bg-blue-200 text-navy-900 font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 text-sm shrink-0 transition cursor-pointer">
+                                <i data-lucide="volume-2" class="w-5 h-5"></i>
+                                <span>Ouvir</span>
+                            </button>
+                        </div>
+
+                        <div id="golpe2-content" class="space-y-3 text-base sm:text-lg">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <strong class="block text-navy-900 mb-1">Como funciona:</strong>
+                                <p class="text-slate-700">Oferecem empréstimo consignado com juros baixíssimos pelo WhatsApp ou telefone. Depois, dizem que você precisa pagar uma "taxa de liberação" ou "seguro" antes de receber o dinheiro.</p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                                <strong class="block text-amber-900 mb-1">⚠️ Sinais de alerta:</strong>
+                                <p class="text-slate-800">Exigência de depósito antecipado (via PIX ou boleto) para liberar o empréstimo e envio de fotos de documentos pelo WhatsApp.</p>
+                            </div>
+                            <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                                <strong class="block text-emerald-900 mb-1">✅ O que fazer:</strong>
+                                <p class="text-slate-800"><strong>Nunca pague nada adiantado</strong> para conseguir um empréstimo. Instituições financeiras sérias descontam taxas diretamente no valor contratado.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3: WhatsApp Clonado -->
+                <article class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-slate-200 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-purple-100 text-purple-700 p-3.5 rounded-2xl shrink-0">
+                                    <i data-lucide="message-square-warning" class="w-7 h-7"></i>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-navy-900">3. WhatsApp Clonado / Falso Parente</h3>
+                            </div>
+                            <button type="button" onclick="speakCard('golpe3')" aria-label="Ouvir explicação sobre WhatsApp Clonado" class="bg-blue-100 hover:bg-blue-200 text-navy-900 font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 text-sm shrink-0 transition cursor-pointer">
+                                <i data-lucide="volume-2" class="w-5 h-5"></i>
+                                <span>Ouvir</span>
+                            </button>
+                        </div>
+
+                        <div id="golpe3-content" class="space-y-3 text-base sm:text-lg">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <strong class="block text-navy-900 mb-1">Como funciona:</strong>
+                                <p class="text-slate-700">Um criminoso usa a foto de um filho ou neto em outro número ("Oi mãe, troquei de número") ou rouba a conta e pede dinheiro urgente para pagar uma conta que vai vencer.</p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                                <strong class="block text-amber-900 mb-1">⚠️ Sinais de alerta:</strong>
+                                <p class="text-slate-800">Pedido urgente de dinheiro, desculpas para não atender ligação ("meu microfone quebrou") e chave PIX em nome de uma pessoa desconhecida.</p>
+                            </div>
+                            <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                                <strong class="block text-emerald-900 mb-1">✅ O que fazer:</strong>
+                                <p class="text-slate-800"><strong>Ligue por chamada de voz ou vídeo</strong> para o número antigo do seu familiar antes de fazer qualquer transferência. Ative a confirmação em duas etapas no WhatsApp.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 4: Falsa Central de Atendimento -->
+                <article class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-slate-200 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-blue-100 text-blue-700 p-3.5 rounded-2xl shrink-0">
+                                    <i data-lucide="headset" class="w-7 h-7"></i>
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-navy-900">4. Falsa Central de Atendimento</h3>
+                            </div>
+                            <button type="button" onclick="speakCard('golpe4')" aria-label="Ouvir explicação sobre Falsa Central de Atendimento" class="bg-blue-100 hover:bg-blue-200 text-navy-900 font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 text-sm shrink-0 transition cursor-pointer">
+                                <i data-lucide="volume-2" class="w-5 h-5"></i>
+                                <span>Ouvir</span>
+                            </button>
+                        </div>
+
+                        <div id="golpe4-content" class="space-y-3 text-base sm:text-lg">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                <strong class="block text-navy-900 mb-1">Como funciona:</strong>
+                                <p class="text-slate-700">Você recebe um SMS falso dizendo "Compra aprovada de R$ 2.900,00. Caso não reconheça, ligue para 0800...". Ao ligar, uma gravação falsa imita o banco e rouba seus dados.</p>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                                <strong class="block text-amber-900 mb-1">⚠️ Sinais de alerta:</strong>
+                                <p class="text-slate-800">Mensagens de texto (SMS) com números 0800 desconhecidos ou links curtos gerando pânico sobre compras altas ou bloqueio do INSS.</p>
+                            </div>
+                            <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                                <strong class="block text-emerald-900 mb-1">✅ O que fazer:</strong>
+                                <p class="text-slate-800"><strong>Nunca ligue para telefones enviados por SMS.</strong> Abra o aplicativo oficial do seu banco no celular para conferir se existe alguma compra real.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             5. TESTADOR INTERATIVO DE SENHAS FORTES E VERIFICADOR DE LINKS
+             ===================================================================== -->
+        <section id="senhas-links" aria-labelledby="titulo-senhas-links" class="scroll-mt-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Coluna Esquerda: Testador de Senhas Fortes -->
+                <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-slate-200 flex flex-col justify-between">
+                    <div class="space-y-5">
+                        <span class="inline-block bg-blue-100 text-navy-900 font-extrabold px-4 py-1.5 rounded-full text-sm">
+                            FERRAMENTA PRÁTICA 2 • PROTEÇÃO DE CONTAS
+                        </span>
+                        <h2 id="titulo-senhas-links" class="text-2xl sm:text-3xl font-extrabold text-navy-900">
+                            Testador de Senhas Fortes
+                        </h2>
+                        <p class="text-base sm:text-lg text-slate-700 leading-relaxed">
+                            Digite uma <strong>senha de teste</strong> (não use sua senha real do banco) para ver como criar uma senha difícil de ser descoberta por golpistas.
+                        </p>
+
+                        <div class="space-y-2">
+                            <label for="password-input" class="block text-base font-bold text-navy-900">
+                                Digite uma senha fictícia para testar:
+                            </label>
+                            <div class="relative flex items-center">
+                                <input type="password" id="password-input" oninput="evaluatePassword()" placeholder="Ex: Casa@2026!Azul" class="w-full text-lg p-4 pr-24 rounded-2xl border-2 border-slate-300 focus:border-navy-900 outline-none">
+                                <button type="button" id="toggle-pass-btn" onclick="togglePasswordVisibility()" class="absolute right-3 bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold px-3 py-2 rounded-xl text-sm cursor-pointer">
+                                    Mostrar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Medidor Visual de Força -->
+                        <div class="space-y-2 pt-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-base font-bold text-slate-700">Nível de Segurança:</span>
+                                <span id="password-strength-label" class="text-base font-extrabold text-slate-500">Aguardando digitação...</span>
+                            </div>
+                            <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden flex gap-1 p-0.5">
+                                <div id="bar-1" class="h-full w-1/4 rounded-full bg-slate-300 transition-all"></div>
+                                <div id="bar-2" class="h-full w-1/4 rounded-full bg-slate-300 transition-all"></div>
+                                <div id="bar-3" class="h-full w-1/4 rounded-full bg-slate-300 transition-all"></div>
+                                <div id="bar-4" class="h-full w-1/4 rounded-full bg-slate-300 transition-all"></div>
+                            </div>
+                        </div>
+
+                        <!-- Checklist Amigável -->
+                        <ul class="space-y-2.5 pt-2 text-base">
+                            <li id="rule-length" class="flex items-center gap-2.5 text-slate-600">
+                                <i data-lucide="circle" class="w-5 h-5 shrink-0"></i>
+                                <span>Ter pelo menos <strong>8 caracteres</strong></span>
+                            </li>
+                            <li id="rule-upper" class="flex items-center gap-2.5 text-slate-600">
+                                <i data-lucide="circle" class="w-5 h-5 shrink-0"></i>
+                                <span>Misturar <strong>letras maiúsculas e minúsculas</strong> (Ex: A, b)</span>
+                            </li>
+                            <li id="rule-number" class="flex items-center gap-2.5 text-slate-600">
+                                <i data-lucide="circle" class="w-5 h-5 shrink-0"></i>
+                                <span>Incluir <strong>números</strong> (evite data de nascimento!)</span>
+                            </li>
+                            <li id="rule-symbol" class="flex items-center gap-2.5 text-slate-600">
+                                <i data-lucide="circle" class="w-5 h-5 shrink-0"></i>
+                                <span>Incluir um <strong>símbolo especial</strong> (Ex: @, #, !, $)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-base text-slate-800">
+                        <strong>Dica de Ouro:</strong> Anote suas senhas em um caderno guardado em local seguro dentro de casa, nunca no celular ou na carteira junto com o cartão.
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Mini-Quiz "Este Link é Seguro?" -->
+                <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-slate-200 flex flex-col justify-between">
+                    <div class="space-y-5">
+                        <span class="inline-block bg-emerald-100 text-emerald-900 font-extrabold px-4 py-1.5 rounded-full text-sm">
+                            FERRAMENTA PRÁTICA 3 • TESTE SEUS CONHECIMENTOS
+                        </span>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-navy-900">
+                            Desafio: Este Link ou Mensagem é Seguro?
+                        </h3>
+                        <p class="text-base sm:text-lg text-slate-700 leading-relaxed">
+                            Leia as 3 mensagens abaixo que costumam chegar por SMS ou WhatsApp e clique se você acha que é <strong>SEGURA</strong> ou <strong>GOLPE</strong>.
+                        </p>
+
+                        <!-- Lista de 3 Desafios Interativos -->
+                        <div id="quiz-container" class="space-y-5">
+                            
+                            <!-- Pergunta 1 -->
+                            <div class="p-4 rounded-2xl bg-slate-50 border-2 border-slate-200 space-y-3">
+                                <p class="font-bold text-navy-900 text-base">Mensagem 1 (SMS):</p>
+                                <p class="bg-white p-3.5 rounded-xl border border-slate-300 font-mono text-sm sm:text-base text-slate-800">
+                                    "INSS AVISA: Seu benefício será bloqueado hoje! Atualize seu cadastro agora em: http://bit.ly/inss-atualiza-rapido"
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <button type="button" onclick="answerQuiz(1, false, this)" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base cursor-pointer">
+                                        É Seguro
+                                    </button>
+                                    <button type="button" onclick="answerQuiz(1, true, this)" class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm sm:text-base cursor-pointer">
+                                        É Golpe!
+                                    </button>
+                                </div>
+                                <div id="quiz-fb-1" class="hidden p-3.5 rounded-xl text-base font-medium"></div>
+                            </div>
+
+                            <!-- Pergunta 2 -->
+                            <div class="p-4 rounded-2xl bg-slate-50 border-2 border-slate-200 space-y-3">
+                                <p class="font-bold text-navy-900 text-base">Mensagem 2 (WhatsApp):</p>
+                                <p class="bg-white p-3.5 rounded-xl border border-slate-300 font-mono text-sm sm:text-base text-slate-800">
+                                    "Olá! Aqui é da farmácia. Enviamos um código de 6 números por SMS no seu celular por engano. Pode me passar por favor?"
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <button type="button" onclick="answerQuiz(2, false, this)" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base cursor-pointer">
+                                        É Seguro
+                                    </button>
+                                    <button type="button" onclick="answerQuiz(2, true, this)" class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm sm:text-base cursor-pointer">
+                                        É Golpe!
+                                    </button>
+                                </div>
+                                <div id="quiz-fb-2" class="hidden p-3.5 rounded-xl text-base font-medium"></div>
+                            </div>
+
+                            <!-- Pergunta 3 -->
+                            <div class="p-4 rounded-2xl bg-slate-50 border-2 border-slate-200 space-y-3">
+                                <p class="font-bold text-navy-900 text-base">Mensagem 3 (Notificação Oficial):</p>
+                                <p class="bg-white p-3.5 rounded-xl border border-slate-300 font-mono text-sm sm:text-base text-slate-800">
+                                    "Seu extrato mensal já está disponível. Para consultar, abra diretamente o aplicativo oficial do seu banco no celular."
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <button type="button" onclick="answerQuiz(3, true, this)" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base cursor-pointer">
+                                        É Seguro
+                                    </button>
+                                    <button type="button" onclick="answerQuiz(3, false, this)" class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm sm:text-base cursor-pointer">
+                                        É Golpe!
+                                    </button>
+                                </div>
+                                <div id="quiz-fb-3" class="hidden p-3.5 rounded-xl text-base font-medium"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             6. CARTILHA DIGITAL EDUCATIVA (VISUALIZAÇÃO E IMPRESSÃO / DOWNLOAD)
+             ===================================================================== -->
+        <section id="cartilha-digital" aria-labelledby="titulo-cartilha" class="scroll-mt-24">
+            <div id="cartilha-print-area" class="bg-gradient-to-br from-navy-900 to-navy-950 text-white rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-amber-400">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-blue-800 pb-6 mb-8">
+                    <div>
+                        <span class="inline-block bg-amber-400 text-navy-950 font-extrabold px-4 py-1 rounded-full text-sm mb-3">
+                            MATERIAL EDUCATIVO GRATUITO • PARA IMPRIMIR OU GUARDAR
+                        </span>
+                        <h2 id="titulo-cartilha" class="text-2xl sm:text-4xl font-extrabold text-white">
+                            Cartilha Digital: Os 5 Mandamentos do Guardião Digital
+                        </h2>
+                        <p class="text-slate-200 text-lg mt-2">
+                            Guarde este resumo ilustrado ou imprima para distribuir em centros de convivência, igrejas e associações de moradores.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 no-print shrink-0">
+                        <button type="button" onclick="window.print()" class="bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-extrabold px-6 py-4 rounded-2xl flex items-center gap-2.5 text-base sm:text-lg shadow-lg transition cursor-pointer">
+                            <i data-lucide="printer" class="w-6 h-6"></i>
+                            <span>Imprimir / Salvar PDF</span>
+                        </button>
+                        <button type="button" onclick="downloadCartilhaTxt()" class="bg-white hover:bg-slate-100 text-navy-900 font-extrabold px-6 py-4 rounded-2xl flex items-center gap-2.5 text-base sm:text-lg shadow-lg transition cursor-pointer">
+                            <i data-lucide="download" class="w-6 h-6"></i>
+                            <span>Baixar Guia (.TXT)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 Passos Ilustrados da Cartilha -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+                    <div class="bg-blue-950/90 border border-blue-700 p-5 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-400 text-navy-950 font-extrabold text-2xl flex items-center justify-center">1</div>
+                        <h3 class="text-lg font-extrabold text-amber-300">Desconfie da Pressa</h3>
+                        <p class="text-slate-100 text-base leading-relaxed">
+                            Golpistas criam urgência ("sua conta vai bloquear hoje"). Respire fundo e nunca decida no susto.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-950/90 border border-blue-700 p-5 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-400 text-navy-950 font-extrabold text-2xl flex items-center justify-center">2</div>
+                        <h3 class="text-lg font-extrabold text-amber-300">Confira o PIX</h3>
+                        <p class="text-slate-100 text-base leading-relaxed">
+                            Antes de digitar a senha do PIX, leia sempre o Nome Completo e o Banco de quem vai receber.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-950/90 border border-blue-700 p-5 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-400 text-navy-950 font-extrabold text-2xl flex items-center justify-center">3</div>
+                        <h3 class="text-lg font-extrabold text-amber-300">Não Clique em Links</h3>
+                        <p class="text-slate-100 text-base leading-relaxed">
+                            Recebeu SMS de banco, INSS ou Correios com link? Não clique! Abra o aplicativo oficial.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-950/90 border border-blue-700 p-5 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-400 text-navy-950 font-extrabold text-2xl flex items-center justify-center">4</div>
+                        <h3 class="text-lg font-extrabold text-amber-300">Proteja seus Códigos</h3>
+                        <p class="text-slate-100 text-base leading-relaxed">
+                            Nunca informe códigos de 6 dígitos recebidos por SMS para ninguém, nem mesmo para amigos.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-950/90 border border-blue-700 p-5 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-400 text-navy-950 font-extrabold text-2xl flex items-center justify-center">5</div>
+                        <h3 class="text-lg font-extrabold text-amber-300">Confirme por Voz</h3>
+                        <p class="text-slate-100 text-base leading-relaxed">
+                            Parente pediu dinheiro no WhatsApp? Ligue para o número antigo dele e ouça a voz antes de ajudar.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =====================================================================
+         7. RODAPÉ INSTITUCIONAL (UNINTER, AUTOR, LOCAIS E ODS)
+         ===================================================================== -->
+    <footer class="bg-navy-950 text-slate-200 border-t-4 border-emerald-500 pt-12 pb-16 px-4 sm:px-6 no-print">
+        <div class="max-w-7xl mx-auto space-y-10">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Coluna 1: Identificação Acadêmica -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5 text-white font-extrabold text-xl">
+                        <i data-lucide="graduation-cap" class="w-6 h-6 text-amber-400"></i>
+                        <span>Identificação Acadêmica</span>
+                    </div>
+                    <p class="text-base leading-relaxed text-slate-300">
+                        <strong>Centro Universitário Internacional UNINTER</strong><br>
+                        Escola Superior Politécnica (ESP)<br>
+                        Curso: Bacharelado em Engenharia da Computação<br>
+                        Disciplina: Atividade Extensionista I — Tecnologia Aplicada à Inclusão Digital
+                    </p>
+                    <div class="bg-navy-900 border border-blue-800 rounded-xl p-3.5 text-sm sm:text-base">
+                        <span class="block text-amber-300 font-bold">Autor do Projeto:</span>
+                        <span class="text-white font-semibold">Willamys Tavares Lima</span> • <span class="text-emerald-300 font-mono">RU: 4961260</span>
+                    </div>
+                </div>
+
+                <!-- Coluna 2: Setor e Locais de Aplicação -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5 text-white font-extrabold text-xl">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-emerald-400"></i>
+                        <span>Locais de Aplicação Comunitária</span>
+                    </div>
+                    <p class="text-base text-slate-300 leading-relaxed">
+                        Projeto desenvolvido com cunho prático e comunitário para setores de vulnerabilidade social e terceira idade:
+                    </p>
+                    <ul class="space-y-2 text-base text-slate-200">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                            <span>Centros de convivência para idosos</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                            <span>Igrejas e associações de moradores</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                            <span>Comunidades com pouco acesso à informação</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                            <span>Comunidades online de apoio digital</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3: Objetivos de Desenvolvimento Sustentável (ODS ONU) -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5 text-white font-extrabold text-xl">
+                        <i data-lucide="globe" class="w-6 h-6 text-blue-400"></i>
+                        <span>Alinhamento aos ODS (ONU)</span>
+                    </div>
+                    <p class="text-base text-slate-300 leading-relaxed">
+                        Este projeto contribui diretamente para os seguintes Objetivos de Desenvolvimento Sustentável:
+                    </p>
+                    <div class="grid grid-cols-2 gap-2.5 pt-1">
+                        <div class="bg-emerald-700 text-white p-3 rounded-xl font-bold text-sm flex items-center gap-2">
+                            <span class="text-lg font-extrabold">03</span>
+                            <span>Saúde e Bem-Estar</span>
+                        </div>
+                        <div class="bg-red-700 text-white p-3 rounded-xl font-bold text-sm flex items-center gap-2">
+                            <span class="text-lg font-extrabold">04</span>
+                            <span>Educação de Qualidade</span>
+                        </div>
+                        <div class="bg-pink-700 text-white p-3 rounded-xl font-bold text-sm flex items-center gap-2">
+                            <span class="text-lg font-extrabold">10</span>
+                            <span>Redução das Desigualdades</span>
+                        </div>
+                        <div class="bg-blue-700 text-white p-3 rounded-xl font-bold text-sm flex items-center gap-2">
+                            <span class="text-lg font-extrabold">16</span>
+                            <span>Paz, Justiça e Instituições</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-6 text-center text-sm sm:text-base text-slate-400">
+                <p>Guardiões Digitais: Guiando Usuários no Espaço Virtual • Todos os direitos reservados para fins educacionais e comunitários.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         JAVASCRIPT: ACESSIBILIDADE, VOZ (WEB SPEECH API), SIMULADOR E QUIZZES
+         ===================================================================== -->
+    <script>
+        // Inicializar ícones Lucide
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderPixPhone();
+        });
+
+        /* -------------------------------------------------------------------
+           1. ACESSIBILIDADE EXTREMA (FONTE, CONTRASTE E LEITURA EM VOZ ALTA)
+           ------------------------------------------------------------------- */
+        let currentFontPercent = 100;
+
+        function changeFontSize(delta) {
+            currentFontPercent = Math.min(135, Math.max(90, currentFontPercent + delta));
+            document.documentElement.style.fontSize = currentFontPercent + '%';
+        }
+
+        function resetFontSize() {
+            currentFontPercent = 100;
+            document.documentElement.style.fontSize = '100%';
+        }
+
+        function toggleHighContrast() {
+            const body = document.body;
+            const btn = document.getElementById('btn-contrast');
+            body.classList.toggle('high-contrast');
+            const isActive = body.classList.contains('high-contrast');
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        }
+
+        // Síntese de Voz (Web Speech API em pt-BR)
+        let isSpeaking = false;
+
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) {
+                showToast('Seu navegador não suporta leitura em voz alta.');
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'pt-BR';
+            utterance.rate = 0.92; // Ritmo levemente mais pausado e claro para idosos
+            utterance.pitch = 1.0;
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                document.getElementById('read-page-label').textContent = 'Parar Áudio';
+            };
+            utterance.onend = () => {
+                isSpeaking = false;
+                document.getElementById('read-page-label').textContent = 'Ouvir Página';
+            };
+            utterance.onerror = () => {
+                isSpeaking = false;
+                document.getElementById('read-page-label').textContent = 'Ouvir Página';
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function toggleReadPage() {
+            if (isSpeaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                document.getElementById('read-page-label').textContent = 'Ouvir Página';
+            } else {
+                const introText = "Bem-vindo ao projeto Guardiões Digitais: Guiando Usuários no Espaço Virtual, desenvolvido por Willamys Tavares Lima da UNINTER. Aqui você pode treinar transferências PIX em um celular seguro, conhecer os 4 principais golpes contra idosos, testar a força da sua senha e imprimir nossa cartilha educativa gratuita.";
+                speakText(introText);
+            }
+        }
+
+        function speakCard(cardId) {
+            const el = document.getElementById(cardId + '-content');
+            if (el) {
+                speakText(el.innerText);
+            }
+        }
+
+        /* -------------------------------------------------------------------
+           2. SIMULADOR INTERATIVO DE PIX SEGURO
+           ------------------------------------------------------------------- */
+        let pixScenario = 'chave'; // 'chave' ou 'qrcode'
+        let pixStep = 1;
+        let pixInputKey = '';
+        let pixInputAmount = '85,00';
+
+        function setPixScenario(scenario) {
+            pixScenario = scenario;
+            pixStep = 1;
+            pixInputKey = '';
+            hidePixFeedback();
+
+            const tabChave = document.getElementById('tab-pix-chave');
+            const tabQr = document.getElementById('tab-pix-qr');
+            const title = document.getElementById('pix-scenario-title');
+            const desc = document.getElementById('pix-scenario-desc');
+
+            if (scenario === 'chave') {
+                tabChave.className = "flex-1 p-5 rounded-2xl border-2 border-navy-900 bg-navy-900 text-white font-bold text-left flex items-center gap-4 shadow-md transition cursor-pointer";
+                tabChave.setAttribute('aria-selected', 'true');
+                tabQr.className = "flex-1 p-5 rounded-2xl border-2 border-slate-300 bg-slate-100 hover:bg-slate-200 text-navy-900 font-bold text-left flex items-center gap-4 transition cursor-pointer";
+                tabQr.setAttribute('aria-selected', 'false');
+
+                title.textContent = "Missão 1: Conferência Obrigatória";
+                desc.innerHTML = 'Você precisa pagar <strong>R$ 85,00</strong> de consulta para a <strong>Clínica Saúde Vida</strong> (CNPJ: 12.345.678/0001-99). Use o botão de preencher chave ou digite abaixo e <strong>confira os dados na tela final</strong>.';
+            } else {
+                tabQr.className = "flex-1 p-5 rounded-2xl border-2 border-navy-900 bg-navy-900 text-white font-bold text-left flex items-center gap-4 shadow-md transition cursor-pointer";
+                tabQr.setAttribute('aria-selected', 'true');
+                tabChave.className = "flex-1 p-5 rounded-2xl border-2 border-slate-300 bg-slate-100 hover:bg-slate-200 text-navy-900 font-bold text-left flex items-center gap-4 transition cursor-pointer";
+                tabChave.setAttribute('aria-selected', 'false');
+
+                title.textContent = "Missão 2: Detetive de QR Code";
+                desc.innerHTML = 'Você recebeu um boleto com QR Code dizendo ser da <strong>Companhia de Energia Elétrica</strong> no valor de <strong>R$ 140,00</strong>. Aponte a câmera do celular virtual e <strong>veja quem realmente vai receber o dinheiro!</strong>';
+            }
+
+            renderPixPhone();
+        }
+
+        function speakPixInstructions() {
+            const desc = document.getElementById('pix-scenario-desc').innerText;
+            speakText(desc);
+        }
+
+        function resetPixPhone() {
+            pixStep = 1;
+            hidePixFeedback();
+            renderPixPhone();
+        }
+
+        function hidePixFeedback() {
+            const box = document.getElementById('pix-feedback-box');
+            box.classList.add('hidden');
+        }
+
+        function showPixFeedback(type, title, message) {
+            const box = document.getElementById('pix-feedback-box');
+            const iconBox = document.getElementById('pix-feedback-icon');
+            const titleEl = document.getElementById('pix-feedback-title');
+            const textEl = document.getElementById('pix-feedback-text');
+
+            box.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-400', 'bg-red-50', 'border-red-400');
+
+            if (type === 'success') {
+                box.classList.add('bg-emerald-50', 'border-emerald-400');
+                iconBox.className = 'p-3 rounded-xl shrink-0 bg-emerald-200 text-emerald-900';
+                iconBox.innerHTML = '<i data-lucide="check-circle-2" class="w-7 h-7"></i>';
+                titleEl.className = 'text-xl font-extrabold text-emerald-900';
+            } else {
+                box.classList.add('bg-red-50', 'border-red-400');
+                iconBox.className = 'p-3 rounded-xl shrink-0 bg-red-200 text-red-900';
+                iconBox.innerHTML = '<i data-lucide="shield-alert" class="w-7 h-7"></i>';
+                titleEl.className = 'text-xl font-extrabold text-red-900';
+            }
+
+            titleEl.textContent = title;
+            textEl.textContent = message;
+            lucide.createIcons();
+            speakText(title + '. ' + message);
+        }
+
+        function fillSampleKey() {
+            pixInputKey = 'contato@clinicasaudevida.com.br';
+            const input = document.getElementById('sim-pix-key');
+            if (input) input.value = pixInputKey;
+        }
+
+        function goToPixReview() {
+            const input = document.getElementById('sim-pix-key');
+            if (input && input.value.trim() === '') {
+                fillSampleKey();
+            }
+            pixStep = 2;
+            renderPixPhone();
+        }
+
+        function confirmPixTransfer(isFraudScenario) {
+            if (!isFraudScenario) {
+                showPixFeedback(
+                    'success',
+                    'Parabéns! Você fez um PIX Seguro!',
+                    'Você conferiu o nome da Clínica Saúde Vida, o CNPJ e o valor de R$ 85,00 antes de confirmar. Esse hábito evita 99% dos erros e golpes.'
+                );
+            } else {
+                showPixFeedback(
+                    'danger',
+                    'Cuidado! Você caiu em um QR Code Falso!',
+                    'Olhe o recebedor: o dinheiro foi para "CARLOS EDUARDO SILVA" em vez da Companhia de Energia Elétrica! Sempre cancele quando o nome do recebedor for diferente da empresa.'
+                );
+            }
+            pixStep = 3;
+            renderPixPhone();
+        }
+
+        function cancelPixTransfer(isFraudScenario) {
+            if (isFraudScenario) {
+                showPixFeedback(
+                    'success',
+                    'Excelente! Golpe Bloqueado com Sucesso!',
+                    'Você percebeu que o recebedor era uma pessoa física desconhecida (Carlos Eduardo) em vez da Companhia de Energia Elétrica e cancelou a operação a tempo!'
+                );
+            } else {
+                showPixFeedback(
+                    'success',
+                    'Operação Cancelada com Segurança!',
+                    'Na dúvida, cancelar é sempre a atitude mais segura. Você pode revisar os dados novamente quando quiser.'
+                );
+            }
+            pixStep = 3;
+            renderPixPhone();
+        }
+
+        function renderPixPhone() {
+            const screen = document.getElementById('phone-screen');
+
+            if (pixScenario === 'chave') {
+                if (pixStep === 1) {
+                    screen.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 text-emerald-800 font-extrabold text-lg border-b pb-2">
+                                <i data-lucide="arrow-right-left" class="w-5 h-5"></i>
+                                <span>Área PIX • Nova Transferência</span>
+                            </div>
+                            <div class="space-y-2">
+                                <label for="sim-pix-key" class="block text-sm font-bold text-slate-700">Chave PIX da Clínica:</label>
+                                <input id="sim-pix-key" type="text" value="${pixInputKey}" placeholder="E-mail, CPF ou Telefone" class="w-full p-3.5 rounded-xl border-2 border-slate-300 text-base font-medium">
+                                <button type="button" onclick="fillSampleKey()" class="text-sm font-bold text-blue-700 underline hover:text-blue-900 cursor-pointer">
+                                    + Preencher chave automaticamente
+                                </button>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">Valor a pagar:</label>
+                                <div class="p-3.5 rounded-xl bg-slate-100 border border-slate-300 font-extrabold text-xl text-navy-900">
+                                    R$ 85,00
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="goToPixReview()" class="w-full mt-6 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 rounded-2xl text-lg shadow transition cursor-pointer">
+                            Continuar para Conferência
+                        </button>
+                    `;
+                } else if (pixStep === 2) {
+                    screen.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="bg-amber-100 border border-amber-300 text-amber-950 p-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                                <i data-lucide="eye" class="w-5 h-5 shrink-0"></i>
+                                <span>ATENÇÃO: Confira os dados antes de pagar!</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5 text-base">
+                                <div>
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">Quem vai receber:</span>
+                                    <strong class="text-lg text-navy-900">CLÍNICA SAÚDE VIDA LTDA</strong>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">CNPJ:</span>
+                                    <span class="font-mono font-bold">12.345.678/0001-99</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">Instituição / Banco:</span>
+                                    <span class="font-bold">Banco do Brasil S.A.</span>
+                                </div>
+                                <div class="pt-2 border-t">
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">Valor:</span>
+                                    <strong class="text-2xl text-emerald-700">R$ 85,00</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-2.5 mt-5">
+                            <button type="button" onclick="confirmPixTransfer(false)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-2xl text-base shadow transition cursor-pointer">
+                                Confirmar e Pagar R$ 85,00
+                            </button>
+                            <button type="button" onclick="cancelPixTransfer(false)" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-2xl text-base transition cursor-pointer">
+                                Cancelar Operação
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    screen.innerHTML = `
+                        <div class="flex flex-col items-center justify-center text-center h-full py-8 space-y-4">
+                            <div class="w-16 h-16 rounded-full bg-blue-100 text-navy-900 flex items-center justify-center">
+                                <i data-lucide="shield-check" class="w-9 h-9"></i>
+                            </div>
+                            <h4 class="text-xl font-extrabold text-navy-900">Treino Concluído!</h4>
+                            <p class="text-base text-slate-700">Leia a explicação educativa ao lado para ver o resultado da sua escolha.</p>
+                            <button type="button" onclick="resetPixPhone()" class="bg-navy-900 text-white font-bold px-6 py-3 rounded-xl text-base cursor-pointer">
+                                Repetir Simulação
+                            </button>
+                        </div>
+                    `;
+                }
+            } else {
+                // CENÁRIO 2: QR CODE FRAUDULENTO
+                if (pixStep === 1) {
+                    screen.innerHTML = `
+                        <div class="space-y-4 text-center">
+                            <div class="flex items-center justify-center gap-2 text-amber-800 font-extrabold text-lg border-b pb-2">
+                                <i data-lucide="qr-code" class="w-5 h-5"></i>
+                                <span>Leitor de QR Code</span>
+                            </div>
+                            <p class="text-sm text-slate-700">
+                                Conta de Luz recebida no WhatsApp:<br>
+                                <strong>"Companhia de Energia • R$ 140,00"</strong>
+                            </p>
+                            <div class="mx-auto w-44 h-44 bg-slate-100 border-4 border-dashed border-navy-900 rounded-2xl flex flex-col items-center justify-center p-3">
+                                <i data-lucide="qr-code" class="w-24 h-24 text-navy-900"></i>
+                                <span class="text-xs font-bold text-slate-600 mt-1">QR Code da Fatura</span>
+                            </div>
+                        </div>
+                        <button type="button" onclick="pixStep=2; renderPixPhone();" class="w-full mt-5 bg-amber-500 hover:bg-amber-400 text-navy-950 font-extrabold py-4 rounded-2xl text-lg shadow transition cursor-pointer">
+                            Ler QR Code Agora
+                        </button>
+                    `;
+                } else if (pixStep === 2) {
+                    screen.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="bg-red-100 border border-red-300 text-red-950 p-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                                <i data-lucide="search" class="w-5 h-5 shrink-0"></i>
+                                <span>OLHE COM ATENÇÃO QUEM VAI RECEBER:</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border-2 border-red-300 space-y-2 text-base">
+                                <div>
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">Beneficiário / Recebedor:</span>
+                                    <strong class="text-lg text-red-700">CARLOS EDUARDO M. SILVA</strong>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">CPF:</span>
+                                    <span class="font-mono font-bold">***.482.910-** (Pessoa Física)</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">Banco:</span>
+                                    <span class="font-bold">Conta Digital Pagamentos</span>
+                                </div>
+                                <div class="pt-1 border-t">
+                                    <span class="block text-xs text-slate-500 uppercase font-bold">Valor:</span>
+                                    <strong class="text-xl text-slate-900">R$ 140,00</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-2.5 mt-4">
+                            <button type="button" onclick="cancelPixTransfer(true)" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-3.5 rounded-2xl text-base shadow transition cursor-pointer">
+                                🛑 Dados Errados! Cancelar PIX
+                            </button>
+                            <button type="button" onclick="confirmPixTransfer(true)" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-2xl text-sm transition cursor-pointer">
+                                Pagar Mesmo Assim
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    screen.innerHTML = `
+                        <div class="flex flex-col items-center justify-center text-center h-full py-8 space-y-4">
+                            <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center">
+                                <i data-lucide="shield-alert" class="w-9 h-9"></i>
+                            </div>
+                            <h4 class="text-xl font-extrabold text-navy-900">Análise Finalizada!</h4>
+                            <p class="text-base text-slate-700">Veja o resultado no painel educativo ao lado.</p>
+                            <button type="button" onclick="resetPixPhone()" class="bg-navy-900 text-white font-bold px-6 py-3 rounded-xl text-base cursor-pointer">
+                                Testar Novamente
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+            lucide.createIcons();
+        }
+
+        /* -------------------------------------------------------------------
+           3. TESTADOR INTERATIVO DE SENHAS FORTES
+           ------------------------------------------------------------------- */
+        function togglePasswordVisibility() {
+            const input = document.getElementById('password-input');
+            const btn = document.getElementById('toggle-pass-btn');
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = 'Ocultar';
+            } else {
+                input.type = 'password';
+                btn.textContent = 'Mostrar';
+            }
+        }
+
+        function evaluatePassword() {
+            const val = document.getElementById('password-input').value;
+            const hasLength = val.length >= 8;
+            const hasUpper = /[A-Z]/.test(val) && /[a-z]/.test(val);
+            const hasNumber = /[0-9]/.test(val);
+            const hasSymbol = /[^A-Za-z0-9]/.test(val);
+
+            updateRuleUI('rule-length', hasLength);
+            updateRuleUI('rule-upper', hasUpper);
+            updateRuleUI('rule-number', hasNumber);
+            updateRuleUI('rule-symbol', hasSymbol);
+
+            let score = 0;
+            if (hasLength) score++;
+            if (hasUpper) score++;
+            if (hasNumber) score++;
+            if (hasSymbol) score++;
+
+            const bars = [
+                document.getElementById('bar-1'),
+                document.getElementById('bar-2'),
+                document.getElementById('bar-3'),
+                document.getElementById('bar-4')
+            ];
+            const label = document.getElementById('password-strength-label');
+
+            bars.forEach(b => b.className = 'h-full w-1/4 rounded-full bg-slate-300 transition-all');
+
+            if (val.length === 0) {
+                label.textContent = 'Aguardando digitação...';
+                label.className = 'text-base font-extrabold text-slate-500';
+                return;
+            }
+
+            if (score <= 1) {
+                bars[0].classList.replace('bg-slate-300', 'bg-red-500');
+                label.textContent = 'Senha Muito Fraca (Fácil de adivinhar)';
+                label.className = 'text-base font-extrabold text-red-600';
+            } else if (score === 2) {
+                bars[0].classList.replace('bg-slate-300', 'bg-amber-500');
+                bars[1].classList.replace('bg-slate-300', 'bg-amber-500');
+                label.textContent = 'Senha Média (Pode melhorar)';
+                label.className = 'text-base font-extrabold text-amber-600';
+            } else if (score === 3) {
+                bars[0].classList.replace('bg-slate-300', 'bg-blue-500');
+                bars[1].classList.replace('bg-slate-300', 'bg-blue-500');
+                bars[2].classList.replace('bg-slate-300', 'bg-blue-500');
+                label.textContent = 'Senha Boa (Quase perfeita!)';
+                label.className = 'text-base font-extrabold text-blue-700';
+            } else {
+                bars.forEach(b => b.classList.replace('bg-slate-300', 'bg-emerald-500'));
+                label.textContent = 'Senha Forte e Segura! Parabéns!';
+                label.className = 'text-base font-extrabold text-emerald-700';
+            }
+        }
+
+        function updateRuleUI(elementId, passed) {
+            const el = document.getElementById(elementId);
+            if (passed) {
+                el.className = 'flex items-center gap-2.5 text-emerald-700 font-bold';
+                el.querySelector('i, svg').outerHTML = '<i data-lucide="check-circle-2" class="w-5 h-5 shrink-0 text-emerald-600"></i>';
+            } else {
+                el.className = 'flex items-center gap-2.5 text-slate-600';
+                el.querySelector('i, svg').outerHTML = '<i data-lucide="circle" class="w-5 h-5 shrink-0"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        /* -------------------------------------------------------------------
+           4. MINI-QUIZ: ESTE LINK É SEGURO?
+           ------------------------------------------------------------------- */
+        function answerQuiz(questionNumber, isCorrect, btnClicked) {
+            const fb = document.getElementById('quiz-fb-' + questionNumber);
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-950', 'bg-red-100', 'text-red-950');
+
+            const explanations = {
+                1: "Isso é GOLPE! O INSS nunca envia links encurtados (bit.ly) por SMS ameaçando bloquear benefícios. Consulte sempre pelo aplicativo oficial Meu INSS.",
+                2: "Isso é GOLPE de clonagem de WhatsApp! Esse código de 6 números é a chave da sua conta. Nunca passe esse código para ninguém.",
+                3: "Correto! Esta mensagem é SEGURA porque não pede dados pessoais e não possui nenhum link suspeito, apenas orienta você a abrir seu aplicativo oficial."
+            };
+
+            if (isCorrect) {
+                fb.classList.add('bg-emerald-100', 'text-emerald-950', 'border', 'border-emerald-400');
+                fb.innerHTML = '✅ <strong>Acertou!</strong> ' + explanations[questionNumber];
+            } else {
+                fb.classList.add('bg-red-100', 'text-red-950', 'border', 'border-red-400');
+                fb.innerHTML = '⚠️ <strong>Atenção!</strong> ' + explanations[questionNumber];
+            }
+            speakText(fb.innerText);
+        }
+
+        /* -------------------------------------------------------------------
+           5. DOWNLOAD DA CARTILHA DIGITAL EM TEXTO FORMATADO
+           ------------------------------------------------------------------- */
+        function downloadCartilhaTxt() {
+            const content = `====================================================================
+GUARDIÕES DIGITAIS: GUIANDO USUÁRIOS NO ESPAÇO VIRTUAL
+Projeto de Extensão Comunitária - UNINTER (Engenharia da Computação)
+Autor: Willamys Tavares Lima (RU: 4961260)
+====================================================================
+
+OS 5 MANDAMENTOS DA SEGURANÇA DIGITAL:
+
+1. DESCONFIE DA PRESSA E DO MEDO
+Golpistas sempre inventam urgências ("sua conta será bloqueada hoje", "compra aprovada"). Respire fundo, desligue o telefone e nunca tome decisões no susto.
+
+2. CONFIRA OS DADOS ANTES DE CONFIRMAR O PIX
+Antes de digitar sua senha do PIX, leia sempre:
+- O Nome Completo de quem vai receber;
+- Os números do CPF ou CNPJ;
+- O Banco de destino.
+Se o nome for diferente da pessoa ou empresa esperada, CANCELE na hora.
+
+3. NÃO CLIQUE EM LINKS DE SMS OU WHATSAPP
+Bancos, INSS, Correios e Receita Federal não enviam links por SMS para atualizar cadastro. Sempre abra o aplicativo oficial do seu banco.
+
+4. PROTEJA SEUS CÓDIGOS E SENHAS
+Nunca informe códigos de 6 dígitos recebidos por SMS para ninguém (nem mesmo para amigos ou supostos atendentes). Crie senhas misturando letras, números e símbolos.
+
+5. PARENTE PEDIU DINHEIRO? CONFIRME POR VOZ!
+Se um filho, neto ou amigo mandar mensagem de um número novo pedindo dinheiro urgente, ligue para o número antigo dele e ouça a voz da pessoa antes de fazer qualquer transferência.
+
+====================================================================
+Compartilhe esta cartilha com seus familiares e vizinhos!
+`;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Cartilha_Guardioes_Digitais_UNINTER.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Notificação visual amigável (substitui alert())
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 z-50 bg-navy-900 text-white border-2 border-amber-400 px-5 py-3.5 rounded-2xl shadow-2xl font-bold text-base';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
